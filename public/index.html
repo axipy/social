@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f7f9fc"><meta name="description" content="AXIPY Social — texto livre, autoria criptográfica e redes conectadas por confiança.">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/style.css">
+<title>AXIPY Social — Sua voz, sua chave</title>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="/" aria-label="AXIPY Social"><img src="/assets/axipy-brand.webp" alt="axipy.org"><span class="brand-sub">SOCIAL</span></a>
+    <nav class="menu" aria-label="Menu principal">
+      <button class="nav-btn active" data-page="home"><span class="symbol">⌂</span> Página inicial</button>
+      <button class="nav-btn" data-page="mine"><span class="symbol">◇</span> Minhas publicações</button>
+      <button class="nav-btn" data-page="network"><span class="symbol">◎</span> Rede AXIPY</button>
+      <button class="nav-btn" data-page="identity"><span class="symbol">⌘</span> Minha identidade</button>
+    </nav>
+    <div class="sidebar-bottom"><div class="protocol-tag"><span class="indicator"></span> AXIPY WIRE v2</div><p>Seu texto. Sua assinatura.<br>Uma rede de muitos nós.</p></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><div class="tiny-label">A REDE É SUA</div><h1 id="page-title">Página inicial</h1></div><div class="top-actions"><span id="status-pill" class="status-pill">Conectando…</span><button id="account-button" class="btn btn-dark">Entrar / Criar conta</button></div></header>
+    <section id="home-view" class="view">
+      <div id="config-alert" class="notice" hidden><span>◎</span><div><strong>Configuração da certificadora pendente</strong><p>Este nó ainda não possui a chave pública confiável de cert.axipy.org. O feed continua disponível; cadastros e publicações serão habilitados após a configuração.</p></div></div>
+      <div class="intro"><span class="eyebrow">PUBLICAÇÕES CERTIFICADAS • TEXTO PURO</span><h2>Ideias circulam.<br><em>O controle permanece seu.</em></h2><p>Mensagens assinadas pelos autores, distribuídas por nós independentes e reconhecidas pelas autoridades em que você confia.</p></div>
+      <section class="composer panel"><div class="composer-upper"><span id="composer-avatar" class="avatar avatar-me">A</span><div class="composer-content"><div class="compose-heading">Compartilhe uma ideia</div><div id="reply-line" class="reply-line" hidden>Respondendo a <span id="reply-cid"></span> <button id="cancel-reply" title="Cancelar resposta">×</button></div><textarea id="post-text" placeholder="O que você tem a dizer?" rows="3" maxlength="16384" aria-label="Escreva sua publicação"></textarea></div></div><div class="compose-footer"><span id="text-count">0 / 16.384 bytes</span><button id="publish-button" class="btn btn-dark">Publicar <span aria-hidden="true">↗</span></button></div></section>
+      <div class="feed-toolbar"><h3>Últimas publicações</h3><button id="refresh-feed" class="text-button">↻ Atualizar</button></div><div id="feed" class="feed-list"></div>
+    </section>
+    <section id="mine-view" class="view" hidden><div class="section-intro"><h2>Suas publicações</h2><p>Os mesmos objetos JSON assinados, disponíveis para qualquer nó que reconheça sua certificadora.</p></div><div id="my-feed" class="feed-list"></div></section>
+    <section id="network-view" class="view" hidden><div class="section-intro"><h2>Uma rede, várias portas.</h2><p>Este site é apenas um nó da AXIPY. A certificadora de usuários é uma entidade separada.</p></div><div class="stats-grid"><div class="stat panel"><small>IDENTIDADE DESTE NÓ</small><strong id="node-short">—</strong></div><div class="stat panel"><small>PEERS CONECTADOS</small><strong id="peer-count">0</strong></div><div class="stat panel"><small>AUTORIDADES RECONHECIDAS</small><strong id="authority-count">0</strong></div></div><div class="panel info-card"><h3>Autoridades certificadoras</h3><p>Os certificados são verificados por suas assinaturas. Cada servidor decide em quais autoridades confia.</p><div id="authorities-list"></div></div><div class="panel info-card"><h3>Transporte AXIPY Wire</h3><p>Comunicação peer-to-peer via TCP, com handshake assinado e transferência por CIDv1. A interface HTTP é apenas para o navegador.</p><div id="network-details"></div></div><div class="panel info-card"><h3>Peers conhecidos</h3><div id="peers-list" class="peer-list"></div></div></section>
+    <section id="identity-view" class="view" hidden><div class="section-intro"><h2>Sua identidade é sua.</h2><p>Uma chave privada no seu navegador, um certificado da autoridade e nenhum login com senha centralizada.</p></div><div class="panel identity-panel" id="identity-panel"></div></section>
+  </main>
+  <aside class="rail"><div class="rail-card"><div class="rail-heading"><span>◈</span> SOBRE ESTA REDE</div><h3>Conectada por princípios.</h3><p>Não existe um único feed obrigatório na AXIPY. Cada nó escolhe o que hospeda e quais certificados aceita.</p><div class="rail-line"><span>Conteúdo</span><strong>Texto puro</strong></div><div class="rail-line"><span>Identidade</span><strong>Ed25519</strong></div><div class="rail-line"><span>Objetos</span><strong>CIDv1</strong></div><div class="rail-line"><span>Protocolo</span><strong>AXIPY v2</strong></div></div><div class="rail-links"><span>social.axipy.org</span><span>•</span><span>cert.axipy.org</span><p>Implementação livre e independente</p></div></aside>
+</div>
+<div class="modal-backdrop" id="modal" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><button class="modal-close" id="modal-close" aria-label="Fechar">×</button><img class="modal-logo" src="/assets/axipy-brand.webp" alt="AXIPY"><h2 id="modal-title">Sua identidade na rede</h2><p id="modal-description">A chave privada pertence a você. Ela não será enviada ao servidor.</p>
+  <div class="modal-tabs"><button id="tab-create" class="active">Criar identidade</button><button id="tab-login">Entrar</button><button id="tab-import">Recuperar</button></div>
+  <form id="create-form" class="modal-form"><label>Nome de exibição <input id="signup-name" maxlength="40" autocomplete="nickname" placeholder="Como prefere aparecer?" required></label><label>Senha do backup criptografado <input id="signup-pass" type="password" minlength="12" autocomplete="new-password" placeholder="No mínimo 12 caracteres" required></label><p class="field-note">A senha protege o arquivo de recuperação. Não é enviada à AXIPY.</p><button class="btn btn-dark full" type="submit">Gerar chave e solicitar certificado ↗</button></form>
+  <form id="login-form" class="modal-form" hidden><div class="soft-box" id="login-local-state">Procurando identidade neste navegador…</div><button class="btn btn-dark full" type="submit">Assinar desafio e entrar ↗</button></form>
+  <form id="import-form" class="modal-form" hidden><label>Arquivo de backup .json <input id="import-file" type="file" accept=".json,application/json" required></label><label>Senha do backup <input id="import-pass" type="password" autocomplete="off" required></label><button class="btn btn-dark full" type="submit">Restaurar chave neste navegador ↗</button></form>
+  <p id="modal-error" class="error-text" role="alert"></p>
+</div></div>
+<div id="toast" class="toast" role="status"></div>
+<script type="module" src="/app.js"></script>
+</body>
+</html>

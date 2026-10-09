@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axipy.org/spec/v2/schemas/body-block.schema.json",
+  "type": "object",
+  "properties": {
+    "cid": {
+      "type": "string",
+      "pattern": "^b[a-z2-7]{58}$"
+    },
+    "object_type": {
+      "enum": [
+        "post",
+        "certificate",
+        "authority",
+        "node",
+        "revocations",
+        "peer_list"
+      ]
+    },
+    "object": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "cid",
+    "object_type",
+    "object"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "post"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "object": {
+            "$ref": "post.schema.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "certificate"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "object": {
+            "$ref": "certificate.schema.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "authority"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "object": {
+            "$ref": "authority-descriptor.schema.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "node"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "object": {
+            "$ref": "node-descriptor.schema.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "revocations"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "object": {
+            "$ref": "revocations.schema.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "peer_list"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "object": {
+            "$ref": "peer-list.schema.json"
+          }
+        }
+      }
+    }
+  ]
+}

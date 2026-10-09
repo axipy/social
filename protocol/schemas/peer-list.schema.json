@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axipy.org/spec/v2/schemas/peer-list.schema.json",
+  "type": "object",
+  "properties": {
+    "payload": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "axipy.peer_list"
+        },
+        "version": {
+          "const": "2"
+        },
+        "node_id": {
+          "type": "string",
+          "pattern": "^axk1_[A-Za-z0-9_-]{43}$"
+        },
+        "issued_at": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        },
+        "expires_at": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        },
+        "nodes": {
+          "type": "array",
+          "maxItems": 256,
+          "items": {
+            "$ref": "node-descriptor.schema.json"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "version",
+        "node_id",
+        "issued_at",
+        "expires_at",
+        "nodes"
+      ],
+      "additionalProperties": false
+    },
+    "signature": {
+      "$ref": "signature.schema.json"
+    }
+  },
+  "required": [
+    "payload",
+    "signature"
+  ],
+  "additionalProperties": false
+}

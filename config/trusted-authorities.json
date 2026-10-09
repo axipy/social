@@ -1,0 +1,9 @@
+{
+  "authorities": [
+    {
+      "name": "AXIPY",
+      "issuer_url": "https://cert.axipy.org/v2/issue",
+      "public_key": null
+    }
+  ]
+}

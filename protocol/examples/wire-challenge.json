@@ -1,0 +1,28 @@
+{
+  "payload": {
+    "type": "axipy.wire",
+    "version": "2",
+    "kind": "CHALLENGE",
+    "from": "axk1_1hWjuomFw4sxCifEZHGhHxcbeFXk-4E23iaE5XZM5ps",
+    "request_id": "Eoj0EweGeIh4NNVcPejFgbHJvDktTwaAlP2O7rMaYUo",
+    "session_id": null,
+    "sent_at": "2026-10-09T02:30:00Z",
+    "body": {
+      "node_key": {
+        "crv": "Ed25519",
+        "x": "j4O_d3cChjp-lccz8F3mEHWt7IczD0sdMFqw-RhQ5GY",
+        "kty": "OKP"
+      },
+      "nonce_a": "Im6lijki6XDP-ZcFWl10S7cqziUP4WWAFVGjpMtakLg",
+      "nonce_b": "r6RlyuAwgrYAH7-TOGeb2ubeXAvnvZXBSlVMyK6wpBk",
+      "accepted_authorities": [
+        "axk1_q3V3Hf8xqDv8GzSgasZo7IQOIRaz-0Vm9eUyK0rthZk"
+      ],
+      "session": "pngJXxDbGk_PukENf10aqjbETMgGKa1iseIxVusbMno"
+    }
+  },
+  "signature": {
+    "algorithm": "Ed25519",
+    "value": "9syp_S_pPaKd_2Wxz1qEAwqRFgnX6YHATB-nWq0h_QyyaD0d6KE9qOtci-VZDoQoWPweXqAocQo1C7OoMFnrAg"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axipy.org/spec/v2/schemas/body-confirm.schema.json",
+  "type": "object",
+  "properties": {
+    "nonce_a": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$"
+    },
+    "nonce_b": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$"
+    },
+    "session": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$"
+    }
+  },
+  "required": [
+    "nonce_a",
+    "nonce_b",
+    "session"
+  ],
+  "additionalProperties": false
+}

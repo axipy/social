@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axipy.org/spec/v2/schemas/error.schema.json",
+  "type": "object",
+  "properties": {
+    "code": {
+      "enum": [
+        "MALFORMED",
+        "UNSUPPORTED_VERSION",
+        "BAD_SIGNATURE",
+        "BAD_CID",
+        "BAD_CERTIFICATE",
+        "EXPIRED_CERTIFICATE",
+        "REVOKED_CERTIFICATE",
+        "UNKNOWN_AUTHORITY",
+        "POLICY_REJECTED",
+        "NOT_FOUND",
+        "HANDSHAKE_REQUIRED",
+        "SESSION_INVALID",
+        "UNKNOWN_PEER",
+        "RATE_LIMIT",
+        "TOO_LARGE",
+        "UNAVAILABLE",
+        "INTERNAL_ERROR"
+      ]
+    },
+    "detail": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "code",
+    "detail"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axipy.org/spec/v2/schemas/body-error.schema.json",
+  "type": "object",
+  "properties": {
+    "error": {
+      "$ref": "error.schema.json"
+    }
+  },
+  "required": [
+    "error"
+  ],
+  "additionalProperties": false
+}

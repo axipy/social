@@ -1,0 +1,11 @@
+services:
+  axipy-social:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "127.0.0.1:${PORT:-3000}:3000"
+      - "${PEER_PORT:-4101}:4101"
+    volumes:
+      - ./var:/app/var
+      - ./config:/app/config:ro

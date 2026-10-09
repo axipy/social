@@ -1,0 +1,18 @@
+{
+  "payload": {
+    "type": "axipy.wire",
+    "version": "2",
+    "kind": "FIND_PROVIDERS",
+    "from": "axk1_1hWjuomFw4sxCifEZHGhHxcbeFXk-4E23iaE5XZM5ps",
+    "request_id": "hK7IB_jbZJT1Hr8iXCrpEyLEUMQyx_pqeztJzhRdGCE",
+    "session_id": "pngJXxDbGk_PukENf10aqjbETMgGKa1iseIxVusbMno",
+    "sent_at": "2026-10-09T02:30:00Z",
+    "body": {
+      "cid": "bafkreiepvpoq2unpkh7t65ew6jjvnhzwxcml2rwsrjc6rex75lhzbzlopy"
+    }
+  },
+  "signature": {
+    "algorithm": "Ed25519",
+    "value": "oabUtv3o7bRgkySukeJn2igo2chGWYVj5uRCRzf0w7I1vSfI5d_qKlBcEkjwewYErLCF2Q52En-KGEloOohvAw"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axipy.org/spec/v2/schemas/bundle.schema.json",
+  "type": "object",
+  "properties": {
+    "post": {
+      "$ref": "post.schema.json"
+    },
+    "certificate": {
+      "$ref": "certificate.schema.json"
+    }
+  },
+  "required": [
+    "post",
+    "certificate"
+  ],
+  "additionalProperties": false
+}

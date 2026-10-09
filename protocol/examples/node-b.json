@@ -1,0 +1,27 @@
+{
+  "payload": {
+    "type": "axipy.node",
+    "version": "2",
+    "node_id": "axk1_1hWjuomFw4sxCifEZHGhHxcbeFXk-4E23iaE5XZM5ps",
+    "node_key": {
+      "crv": "Ed25519",
+      "x": "j4O_d3cChjp-lccz8F3mEHWt7IczD0sdMFqw-RhQ5GY",
+      "kty": "OKP"
+    },
+    "addresses": [
+      {
+        "profile": "axipy-tcp/1",
+        "multiaddr": "/ip4/127.0.0.1/tcp/4102"
+      }
+    ],
+    "supported_wire_versions": [
+      "2"
+    ],
+    "issued_at": "2026-10-09T02:30:00Z",
+    "expires_at": "2026-10-10T02:30:00Z"
+  },
+  "signature": {
+    "algorithm": "Ed25519",
+    "value": "E8nYuJhfJV5JxkvqcFa3C5MwJ-6uWVaMGtK0wfl6JB67CmswdqlV1EeSWKq0PTLNUAndcZf0GCTTielC4QIyBA"
+  }
+}

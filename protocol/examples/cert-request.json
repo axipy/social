@@ -1,0 +1,17 @@
+{
+  "payload": {
+    "type": "axipy.cert_request",
+    "version": "2",
+    "subject_key": {
+      "crv": "Ed25519",
+      "x": "PlzrCWnaxwLy89sjGn9W1px3-wHLRETlF0FfvNM3K8M",
+      "kty": "OKP"
+    },
+    "nonce": "xZV4qWuQdkAuQ7Ss9l5cOZ4fejPGRA63eUCZ8z0MhzU",
+    "created_at": "2026-10-09T02:30:00Z"
+  },
+  "signature": {
+    "algorithm": "Ed25519",
+    "value": "PHWHcgrShnN1Q8KQZjmN27VfJPvwwo4p1k6gky0T48F-Jx8hGX8TBHNBlCJTC1H-JIukWpObLm7obvL3xiywAQ"
+  }
+}

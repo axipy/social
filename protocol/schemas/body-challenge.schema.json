@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axipy.org/spec/v2/schemas/body-challenge.schema.json",
+  "type": "object",
+  "properties": {
+    "node_key": {
+      "$ref": "public-key.schema.json"
+    },
+    "nonce_a": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$"
+    },
+    "nonce_b": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$"
+    },
+    "accepted_authorities": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^axk1_[A-Za-z0-9_-]{43}$"
+      }
+    },
+    "session": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$"
+    }
+  },
+  "required": [
+    "node_key",
+    "nonce_a",
+    "nonce_b",
+    "accepted_authorities",
+    "session"
+  ],
+  "additionalProperties": false
+}

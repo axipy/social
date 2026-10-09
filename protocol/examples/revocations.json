@@ -1,0 +1,15 @@
+{
+  "payload": {
+    "type": "axipy.revocations",
+    "version": "2",
+    "issuer_id": "axk1_q3V3Hf8xqDv8GzSgasZo7IQOIRaz-0Vm9eUyK0rthZk",
+    "sequence": 1,
+    "issued_at": "2026-10-09T02:30:00Z",
+    "next_update": "2026-10-10T02:30:00Z",
+    "revoked": []
+  },
+  "signature": {
+    "algorithm": "Ed25519",
+    "value": "r0py2knRf97W170MCsqjRajz1-iCGDfMRjOSoJbq48N1sf0fNVBS1l_ZOKoZnPaEHv_ZvwSw9dCL-pFZHJIUCw"
+  }
+}

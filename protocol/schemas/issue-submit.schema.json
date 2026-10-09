@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axipy.org/spec/v2/schemas/issue-submit.schema.json",
+  "type": "object",
+  "properties": {
+    "request": {
+      "$ref": "cert-request.schema.json"
+    },
+    "forward": {
+      "anyOf": [
+        {
+          "$ref": "issue-forward.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "request",
+    "forward"
+  ],
+  "additionalProperties": false
+}

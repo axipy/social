@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axipy.org/spec/v2/schemas/signature.schema.json",
+  "type": "object",
+  "properties": {
+    "algorithm": {
+      "const": "Ed25519"
+    },
+    "value": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{86}$"
+    }
+  },
+  "required": [
+    "algorithm",
+    "value"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,26 @@
+{
+  "payload": {
+    "type": "axipy.authority",
+    "version": "2",
+    "authority_id": "axk1_q3V3Hf8xqDv8GzSgasZo7IQOIRaz-0Vm9eUyK0rthZk",
+    "public_key": {
+      "crv": "Ed25519",
+      "x": "9w_T2_pVutReKWMBB1Ii2Q2Iz4rw43P5zv_ciT-njmA",
+      "kty": "OKP"
+    },
+    "policy_id": "axipy-basic-v1",
+    "policy_uri": null,
+    "addresses": [
+      {
+        "profile": "axipy-issuer-tcp/1",
+        "multiaddr": "/dns4/ac.axipy.example/tcp/4100"
+      }
+    ],
+    "revocations_cid": "bafkreichk5ijwze6turbs72bn3wxunt6glu6ik3iyqcurobqv3pmejd5pm",
+    "issued_at": "2026-10-09T02:30:00Z"
+  },
+  "signature": {
+    "algorithm": "Ed25519",
+    "value": "eLRDLM4XHTbktPwDfi-q6bOyNDAA74eOw5YS2ODRGiWuCwAlnfOJoa9KlR2wysMVxf9gTneFBQZqWJzOIo0tDA"
+  }
+}

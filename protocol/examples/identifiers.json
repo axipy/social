@@ -1,0 +1,22 @@
+{
+  "spec_revision": "0.2",
+  "wire_version": "2",
+  "test_only": true,
+  "key_ids": {
+    "authority": "axk1_q3V3Hf8xqDv8GzSgasZo7IQOIRaz-0Vm9eUyK0rthZk",
+    "other_authority": "axk1_knI8G-znsXaImNx8u2-mpr5CarZDhCeErDXbxFuBC-o",
+    "user": "axk1_qXiqDHL2LouqHwYYBY4Hmc5Sfde-ZaRN4yDjFOxFhAg",
+    "node_a": "axk1_WhISYLBdJXPtXlzlbsWhnYBHDc-8bo4mzOQ6AV5Y_0o",
+    "node_b": "axk1_1hWjuomFw4sxCifEZHGhHxcbeFXk-4E23iaE5XZM5ps"
+  },
+  "cids": {
+    "certificate": "bafkreidfey3l65gqxhlgvuzmnsuuvljnkywkumdyzu2qjo35w5sm3j5jrq",
+    "post": "bafkreiepvpoq2unpkh7t65ew6jjvnhzwxcml2rwsrjc6rex75lhzbzlopy",
+    "reply": "bafkreiehlquggreur62t7w62vio7u7h5oqu52nfseqrqw2ut6xvl3ey77q",
+    "revocations": "bafkreichk5ijwze6turbs72bn3wxunt6glu6ik3iyqcurobqv3pmejd5pm",
+    "authority": "bafkreigroo4zxwegmpjdcain2vifprxc2j6yrudfouwd7wn5ibi3fqsxzm",
+    "node_a": "bafkreihkz7c3qwr6dscudav2dbiwl6tukwaklqqsfabtn7az7ng34mjboe",
+    "node_b": "bafkreifk6kpq4vkevpnyrgf75rstby6supcgsdaxgtsgqxlmyxcfi62oxu"
+  },
+  "session": "pngJXxDbGk_PukENf10aqjbETMgGKa1iseIxVusbMno"
+}

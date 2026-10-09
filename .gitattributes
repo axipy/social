@@ -1,0 +1,2 @@
+# Keep protocol vectors and other source files byte-for-byte identical in Git.
+* -text

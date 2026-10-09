@@ -1,0 +1,21 @@
+{
+  "payload": {
+    "type": "axipy.wire",
+    "version": "2",
+    "kind": "READY",
+    "from": "axk1_1hWjuomFw4sxCifEZHGhHxcbeFXk-4E23iaE5XZM5ps",
+    "request_id": "Eoj0EweGeIh4NNVcPejFgbHJvDktTwaAlP2O7rMaYUo",
+    "session_id": "pngJXxDbGk_PukENf10aqjbETMgGKa1iseIxVusbMno",
+    "sent_at": "2026-10-09T02:30:00Z",
+    "body": {
+      "session": "pngJXxDbGk_PukENf10aqjbETMgGKa1iseIxVusbMno",
+      "accepted_authorities": [
+        "axk1_q3V3Hf8xqDv8GzSgasZo7IQOIRaz-0Vm9eUyK0rthZk"
+      ]
+    }
+  },
+  "signature": {
+    "algorithm": "Ed25519",
+    "value": "4pooOZnv71xI_K0DSSdiIXkLd6j0RYD7S1eEsfmkUz7--NJbwrh8ZPdI6KegVRKluNA6AivKvEcSJyEyxLUDDA"
+  }
+}

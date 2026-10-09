@@ -1,0 +1,15 @@
+{
+  "payload": {
+    "type": "axipy.post",
+    "version": "2",
+    "author_key_id": "axk1_qXiqDHL2LouqHwYYBY4Hmc5Sfde-ZaRN4yDjFOxFhAg",
+    "certificate_cid": "bafkreidfey3l65gqxhlgvuzmnsuuvljnkywkumdyzu2qjo35w5sm3j5jrq",
+    "created_at": "2026-10-09T02:30:00Z",
+    "text": "Olá, AXIPY! Texto puro, identidade certificada e CID verificável.",
+    "reply_to": null
+  },
+  "signature": {
+    "algorithm": "Ed25519",
+    "value": "quMEv1ibfjkEih_befU-URzEVH4GKWicWedej-d21byb1scqvPM3Sj04t0GcqKlqVGTCom1j5KHiNAM_RAtjCw"
+  }
+}

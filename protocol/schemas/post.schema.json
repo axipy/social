@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axipy.org/spec/v2/schemas/post.schema.json",
+  "type": "object",
+  "properties": {
+    "payload": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "axipy.post"
+        },
+        "version": {
+          "const": "2"
+        },
+        "author_key_id": {
+          "type": "string",
+          "pattern": "^axk1_[A-Za-z0-9_-]{43}$"
+        },
+        "certificate_cid": {
+          "type": "string",
+          "pattern": "^b[a-z2-7]{58}$"
+        },
+        "created_at": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "reply_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^b[a-z2-7]{58}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "version",
+        "author_key_id",
+        "certificate_cid",
+        "created_at",
+        "text",
+        "reply_to"
+      ],
+      "additionalProperties": false
+    },
+    "signature": {
+      "$ref": "signature.schema.json"
+    }
+  },
+  "required": [
+    "payload",
+    "signature"
+  ],
+  "additionalProperties": false
+}

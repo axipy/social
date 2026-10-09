@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axipy.org/spec/v2/schemas/certificate.schema.json",
+  "type": "object",
+  "properties": {
+    "payload": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "axipy.certificate"
+        },
+        "version": {
+          "const": "2"
+        },
+        "issuer_id": {
+          "type": "string",
+          "pattern": "^axk1_[A-Za-z0-9_-]{43}$"
+        },
+        "subject_key": {
+          "$ref": "public-key.schema.json"
+        },
+        "issued_at": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        },
+        "expires_at": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        },
+        "policy_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "registration": {
+          "type": "object",
+          "properties": {
+            "requested_by": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^axk1_[A-Za-z0-9_-]{43}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "requester_verification": {
+              "enum": [
+                "cryptographic",
+                "observed",
+                "declared",
+                null
+              ]
+            },
+            "method": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "requested_by",
+            "requester_verification",
+            "method"
+          ],
+          "additionalProperties": false
+        },
+        "claims": {
+          "type": "object",
+          "maxProperties": 32,
+          "propertyNames": {
+            "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,63}$"
+          },
+          "additionalProperties": {
+            "type": [
+              "string",
+              "boolean",
+              "integer",
+              "null"
+            ]
+          }
+        }
+      },
+      "required": [
+        "type",
+        "version",
+        "issuer_id",
+        "subject_key",
+        "issued_at",
+        "expires_at",
+        "policy_id",
+        "registration",
+        "claims"
+      ],
+      "additionalProperties": false
+    },
+    "signature": {
+      "$ref": "signature.schema.json"
+    }
+  },
+  "required": [
+    "payload",
+    "signature"
+  ],
+  "additionalProperties": false
+}

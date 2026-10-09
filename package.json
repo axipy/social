@@ -1,0 +1,12 @@
+{
+  "name": "axipy-social", "version": "0.1.0", "private": true,
+  "type": "module", "description": "Nó social AXIPY Wire v2, referência independente de transporte HTTP",
+  "engines": {"node": ">=22"},
+  "scripts": {
+    "start": "node src/main.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "dev:ca": "node dev/authority.mjs",
+    "key:authority": "node tools/install-authority.mjs"
+  },
+  "dependencies": {}, "license": "MIT"
+}

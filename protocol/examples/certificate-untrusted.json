@@ -1,0 +1,25 @@
+{
+  "payload": {
+    "type": "axipy.certificate",
+    "version": "2",
+    "issuer_id": "axk1_knI8G-znsXaImNx8u2-mpr5CarZDhCeErDXbxFuBC-o",
+    "subject_key": {
+      "crv": "Ed25519",
+      "x": "PlzrCWnaxwLy89sjGn9W1px3-wHLRETlF0FfvNM3K8M",
+      "kty": "OKP"
+    },
+    "issued_at": "2026-10-09T00:00:00Z",
+    "expires_at": "2027-10-09T00:00:00Z",
+    "policy_id": "outsider-basic-v1",
+    "registration": {
+      "requested_by": "axk1_WhISYLBdJXPtXlzlbsWhnYBHDc-8bo4mzOQ6AV5Y_0o",
+      "requester_verification": "cryptographic",
+      "method": "signed-request"
+    },
+    "claims": {}
+  },
+  "signature": {
+    "algorithm": "Ed25519",
+    "value": "f8q1C5rKuW7eJUTUcbXckqh2pea_vAGfV9tOJoEw6OFmcbwImDgRUj0bQP8IFV5C9d4PUAy3w5-KruOHkUL9Cg"
+  }
+}

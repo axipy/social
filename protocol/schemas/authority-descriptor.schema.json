@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axipy.org/spec/v2/schemas/authority-descriptor.schema.json",
+  "type": "object",
+  "properties": {
+    "payload": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "axipy.authority"
+        },
+        "version": {
+          "const": "2"
+        },
+        "authority_id": {
+          "type": "string",
+          "pattern": "^axk1_[A-Za-z0-9_-]{43}$"
+        },
+        "public_key": {
+          "$ref": "public-key.schema.json"
+        },
+        "policy_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "policy_uri": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "addresses": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "allOf": [
+              {
+                "$ref": "transport-address.schema.json"
+              },
+              {
+                "properties": {
+                  "profile": {
+                    "enum": [
+                      "axipy-issuer-tcp/1",
+                      "axipy-issuer-libp2p/1"
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "revocations_cid": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^b[a-z2-7]{58}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "issued_at": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        }
+      },
+      "required": [
+        "type",
+        "version",
+        "authority_id",
+        "public_key",
+        "policy_id",
+        "policy_uri",
+        "addresses",
+        "revocations_cid",
+        "issued_at"
+      ],
+      "additionalProperties": false
+    },
+    "signature": {
+      "$ref": "signature.schema.json"
+    }
+  },
+  "required": [
+    "payload",
+    "signature"
+  ],
+  "additionalProperties": false
+}

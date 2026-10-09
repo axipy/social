@@ -1,0 +1,7 @@
+social.axipy.org {
+  reverse_proxy 127.0.0.1:3000 {
+    header_up X-Forwarded-Proto {scheme}
+  }
+}
+# TCP 4101 é o transporte AXIPY Wire e deve ser liberado diretamente no firewall.
+# Use USE_PROXY_HEADERS=true com proxy local confiável.

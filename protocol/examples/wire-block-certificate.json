@@ -1,0 +1,44 @@
+{
+  "payload": {
+    "type": "axipy.wire",
+    "version": "2",
+    "kind": "BLOCK",
+    "from": "axk1_WhISYLBdJXPtXlzlbsWhnYBHDc-8bo4mzOQ6AV5Y_0o",
+    "request_id": "7hZRShcUKsRqVUzUXn6Iw1vj1NSuw6G8NPNYo0dJNWs",
+    "session_id": "pngJXxDbGk_PukENf10aqjbETMgGKa1iseIxVusbMno",
+    "sent_at": "2026-10-09T02:30:00Z",
+    "body": {
+      "cid": "bafkreidfey3l65gqxhlgvuzmnsuuvljnkywkumdyzu2qjo35w5sm3j5jrq",
+      "object_type": "certificate",
+      "object": {
+        "payload": {
+          "type": "axipy.certificate",
+          "version": "2",
+          "issuer_id": "axk1_q3V3Hf8xqDv8GzSgasZo7IQOIRaz-0Vm9eUyK0rthZk",
+          "subject_key": {
+            "crv": "Ed25519",
+            "x": "PlzrCWnaxwLy89sjGn9W1px3-wHLRETlF0FfvNM3K8M",
+            "kty": "OKP"
+          },
+          "issued_at": "2026-10-09T00:00:00Z",
+          "expires_at": "2027-10-09T00:00:00Z",
+          "policy_id": "axipy-basic-v1",
+          "registration": {
+            "requested_by": "axk1_WhISYLBdJXPtXlzlbsWhnYBHDc-8bo4mzOQ6AV5Y_0o",
+            "requester_verification": "cryptographic",
+            "method": "signed-request"
+          },
+          "claims": {}
+        },
+        "signature": {
+          "algorithm": "Ed25519",
+          "value": "xN3frfXx6u-jsh5_bkpm-O4snhk7MyT8jYeIHzv6blnA_HNzKNYRl9LFCSFVXk_k3T_NVl-27cB93axQQCakBg"
+        }
+      }
+    }
+  },
+  "signature": {
+    "algorithm": "Ed25519",
+    "value": "DR7uA1mX1iiLornHNfeVZVNXfHXbl2L0cQq1eYsSvMT3Xyi1MjJKxPECZCvVIrATsdagRzgu1IEjMX6LHjWhCg"
+  }
+}

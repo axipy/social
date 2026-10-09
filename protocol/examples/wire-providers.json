@@ -1,0 +1,47 @@
+{
+  "payload": {
+    "type": "axipy.wire",
+    "version": "2",
+    "kind": "PROVIDERS",
+    "from": "axk1_WhISYLBdJXPtXlzlbsWhnYBHDc-8bo4mzOQ6AV5Y_0o",
+    "request_id": "hK7IB_jbZJT1Hr8iXCrpEyLEUMQyx_pqeztJzhRdGCE",
+    "session_id": "pngJXxDbGk_PukENf10aqjbETMgGKa1iseIxVusbMno",
+    "sent_at": "2026-10-09T02:30:00Z",
+    "body": {
+      "cid": "bafkreiepvpoq2unpkh7t65ew6jjvnhzwxcml2rwsrjc6rex75lhzbzlopy",
+      "providers": [
+        {
+          "payload": {
+            "type": "axipy.node",
+            "version": "2",
+            "node_id": "axk1_WhISYLBdJXPtXlzlbsWhnYBHDc-8bo4mzOQ6AV5Y_0o",
+            "node_key": {
+              "crv": "Ed25519",
+              "x": "Odi3KcieH9adOiEmSkMhGbVQzGINPuMWogFzYkagRAM",
+              "kty": "OKP"
+            },
+            "addresses": [
+              {
+                "profile": "axipy-tcp/1",
+                "multiaddr": "/ip4/127.0.0.1/tcp/4101"
+              }
+            ],
+            "supported_wire_versions": [
+              "2"
+            ],
+            "issued_at": "2026-10-09T02:30:00Z",
+            "expires_at": "2026-10-10T02:30:00Z"
+          },
+          "signature": {
+            "algorithm": "Ed25519",
+            "value": "oXlYOtIQZRjRYZPNJ5KFTYCV_47i9FgETWvIQH3sBKOZAGiarXIjwXd7GqOmIdvaATMqN0V0jmA0R9TXfLoYAg"
+          }
+        }
+      ]
+    }
+  },
+  "signature": {
+    "algorithm": "Ed25519",
+    "value": "o9HT5Esl_BqgXguvQvD0lfm2vH699jxY840JsCUIxz7ZZ-oB7yyY9UwVbGvnbUR-psSobil5lIvqDtoHeR2zAw"
+  }
+}

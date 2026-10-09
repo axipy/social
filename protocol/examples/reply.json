@@ -1,0 +1,15 @@
+{
+  "payload": {
+    "type": "axipy.post",
+    "version": "2",
+    "author_key_id": "axk1_qXiqDHL2LouqHwYYBY4Hmc5Sfde-ZaRN4yDjFOxFhAg",
+    "certificate_cid": "bafkreidfey3l65gqxhlgvuzmnsuuvljnkywkumdyzu2qjo35w5sm3j5jrq",
+    "created_at": "2026-10-09T02:31:00Z",
+    "text": "Uma resposta também é um post.",
+    "reply_to": "bafkreiepvpoq2unpkh7t65ew6jjvnhzwxcml2rwsrjc6rex75lhzbzlopy"
+  },
+  "signature": {
+    "algorithm": "Ed25519",
+    "value": "2bOAX8-GfVQiQc76sZ5KuR-Ol5SrgzIlvppDmT13DRgwPKoSfGge_WFNyAQEvi7qREmG1A0BonvuR8JPhkXaAA"
+  }
+}

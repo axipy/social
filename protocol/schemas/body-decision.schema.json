@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axipy.org/spec/v2/schemas/body-decision.schema.json",
+  "type": "object",
+  "properties": {
+    "cid": {
+      "type": "string",
+      "pattern": "^b[a-z2-7]{58}$"
+    },
+    "decision": {
+      "enum": [
+        "WANT",
+        "SKIP",
+        "REJECT"
+      ]
+    },
+    "reason": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "cid",
+    "decision",
+    "reason"
+  ],
+  "additionalProperties": false
+}

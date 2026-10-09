@@ -1,0 +1,20 @@
+{
+  "payload": {
+    "type": "axipy.wire",
+    "version": "2",
+    "kind": "CONFIRM",
+    "from": "axk1_WhISYLBdJXPtXlzlbsWhnYBHDc-8bo4mzOQ6AV5Y_0o",
+    "request_id": "Eoj0EweGeIh4NNVcPejFgbHJvDktTwaAlP2O7rMaYUo",
+    "session_id": "pngJXxDbGk_PukENf10aqjbETMgGKa1iseIxVusbMno",
+    "sent_at": "2026-10-09T02:30:00Z",
+    "body": {
+      "nonce_a": "Im6lijki6XDP-ZcFWl10S7cqziUP4WWAFVGjpMtakLg",
+      "nonce_b": "r6RlyuAwgrYAH7-TOGeb2ubeXAvnvZXBSlVMyK6wpBk",
+      "session": "pngJXxDbGk_PukENf10aqjbETMgGKa1iseIxVusbMno"
+    }
+  },
+  "signature": {
+    "algorithm": "Ed25519",
+    "value": "-mVTnFZnp-D56bpw6K4cl0Qj9OQF9sL0wfl1XIv10S7px77UT-Lbrcxk3mnvDpNgBfjbtrIV5mQChoJCfWqFDQ"
+  }
+}

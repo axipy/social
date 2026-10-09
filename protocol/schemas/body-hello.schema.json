@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axipy.org/spec/v2/schemas/body-hello.schema.json",
+  "type": "object",
+  "properties": {
+    "node_key": {
+      "$ref": "public-key.schema.json"
+    },
+    "nonce_a": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$"
+    },
+    "authorities": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 128,
+      "items": {
+        "type": "string",
+        "pattern": "^axk1_[A-Za-z0-9_-]{43}$"
+      }
+    },
+    "wire_versions": {
+      "type": "array",
+      "items": {
+        "const": "2"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    }
+  },
+  "required": [
+    "node_key",
+    "nonce_a",
+    "authorities",
+    "wire_versions"
+  ],
+  "additionalProperties": false
+}

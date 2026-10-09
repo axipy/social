@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axipy.org/spec/v2/schemas/body-announce.schema.json",
+  "type": "object",
+  "properties": {
+    "cid": {
+      "type": "string",
+      "pattern": "^b[a-z2-7]{58}$"
+    },
+    "issuer_id": {
+      "type": "string",
+      "pattern": "^axk1_[A-Za-z0-9_-]{43}$"
+    },
+    "author_key_id": {
+      "type": "string",
+      "pattern": "^axk1_[A-Za-z0-9_-]{43}$"
+    }
+  },
+  "required": [
+    "cid",
+    "issuer_id",
+    "author_key_id"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axipy.org/spec/v2/schemas/transport-address.schema.json",
+  "type": "object",
+  "properties": {
+    "profile": {
+      "enum": [
+        "axipy-tcp/1",
+        "axipy-libp2p/1",
+        "axipy-issuer-tcp/1",
+        "axipy-issuer-libp2p/1"
+      ]
+    },
+    "multiaddr": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    }
+  },
+  "required": [
+    "profile",
+    "multiaddr"
+  ],
+  "additionalProperties": false
+}

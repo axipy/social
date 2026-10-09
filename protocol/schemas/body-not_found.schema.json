@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axipy.org/spec/v2/schemas/body-not_found.schema.json",
+  "type": "object",
+  "properties": {
+    "cid": {
+      "type": "string",
+      "pattern": "^b[a-z2-7]{58}$"
+    }
+  },
+  "required": [
+    "cid"
+  ],
+  "additionalProperties": false
+}
