@@ -10,15 +10,6 @@
       "type": "string",
       "pattern": "^[A-Za-z0-9_-]{43}$"
     },
-    "authorities": {
-      "type": "array",
-      "uniqueItems": true,
-      "maxItems": 128,
-      "items": {
-        "type": "string",
-        "pattern": "^axk1_[A-Za-z0-9_-]{43}$"
-      }
-    },
     "wire_versions": {
       "type": "array",
       "items": {
@@ -31,7 +22,6 @@
   "required": [
     "node_key",
     "nonce_a",
-    "authorities",
     "wire_versions"
   ],
   "additionalProperties": false

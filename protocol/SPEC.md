@@ -1,8 +1,8 @@
 # AXIPY — Especificação de Protocolo, revisão 0.2
 
-**Estado:** proposta normativa, não ratificada. **Versão de objetos e mensagens:** `2`. **Tipo:** protocolo de rede peer-to-peer para objetos sociais textuais, independente da aplicação, do transporte e do armazenamento.
+**Estado:** especificação oficial em desenvolvimento, revisão 0.2. **Versão de objetos e mensagens:** `2`. **Tipo:** protocolo de rede peer-to-peer para objetos sociais textuais, independente da aplicação, do transporte e do armazenamento.
 
-Nesta especificação, **DEVE**, **NÃO DEVE**, **PODE** e **RECOMENDA-SE** são termos normativos. A versão 2 é intencionalmente incompatível nos endereços de conteúdo e formatos de mensagem com o rascunho HTTP v0.1; não há conversão implícita.
+Nesta especificação, os termos em destaque **DEVE** (`MUST`), **NÃO DEVE** (`MUST NOT`), **RECOMENDA-SE** (`SHOULD`) e **PODE** (`MAY`) têm o sentido da [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) e da [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). Seu uso normativo fica restrito aos requisitos do protocolo; descrições de política local e recomendações de implementação identificadas como não normativas não criam requisitos de conformidade. A versão 2 é intencionalmente incompatível nos endereços de conteúdo e formatos de mensagem com o rascunho HTTP v0.1; não há conversão implícita.
 
 ## 1. Definição, alcance e papéis
 
@@ -102,7 +102,13 @@ O certificado é assinado pela AC apontada em `issuer_id`, e o verificador obté
 
 ### 4.3. Descritores e revogação
 
-A AC pode anunciar um `authority-descriptor` assinado com chave, política, endereços de serviço e CID do snapshot de revogações (`revocations_cid`). O descriptor é descobrível, **não concede confiança**. A AC pode emitir `revocations` assinado com `issuer_id`, `sequence`, `issued_at`, `next_update` e lista de CIDs de certificados revogados. O receptor deve rejeitar assinaturas inválidas e retrocessos de sequência para a mesma AC. A aceitação de snapshots atrasados/indisponíveis é **política local explicitamente configurada**, não alegação de que um certificado nunca foi revogado.
+A AC pode anunciar um `authority-descriptor` assinado com chave, política, endereços de serviço e CID do snapshot de revogações (`revocations_cid`). O descriptor é descobrível, **não concede confiança**. A AC pode emitir `revocations` assinado com `issuer_id`, `sequence`, `issued_at`, `next_update` e lista de CIDs de certificados revogados.
+
+**Validação do protocolo:** o receptor DEVE conferir o CID, verificar a assinatura com a chave pública da AC emissora e rejeitar retrocessos de `sequence` em relação ao maior valor já aceito para a mesma AC. A verificação criptográfica da assinatura é distinta do reconhecimento local da AC: um snapshot assinado por AC não reconhecida não se torna fonte confiável de revogações desse nó. `issued_at` declara quando a AC emitiu o snapshot. `next_update` é a data UTC em que a AC declara esperar publicar informação mais recente; usa o formato exato de horário da [seção 2.1](#21-primitivas-obrigatórias). `revocations_cid` aponta para um snapshot específico, não para um estado global permanentemente atualizado. Um snapshot autenticado continua sendo aquele mesmo objeto assinado quando o horário atual alcança ou ultrapassa `next_update`; somente essa passagem do tempo não altera sua assinatura, seu CID, sua `sequence` nem revoga automaticamente os certificados.
+
+**Política local, não normativa:** o nó decide se aceita, limita ou suspende o uso de certificados quando seu conhecimento de revogação está atrasado, indisponível ou incompleto. `next_update` não garante ausência de revogação desde `issued_at` e não determina uma escolha universal entre aceitar e rejeitar. A AC não precisa ser consultada a cada publicação: snapshots assinados podem ser distribuídos e verificados por CID.
+
+**Recomendação de implementação, não normativa:** para sinalizar um snapshot como atrasado, uma implementação pode comparar o horário UTC atual com `next_update` e considerar o prazo alcançado quando `agora >= next_update`. Ao detectar atraso ou indisponibilidade, pode buscar informação mais recente pelas fontes permitidas por sua política. Essa avaliação temporal e a decisão operacional permanecem separadas da validação criptográfica e do reconhecimento local da AC. Veja também [Considerações de Segurança](#11-considerações-de-segurança).
 
 ## 5. Posts: apenas texto puro
 
@@ -121,15 +127,20 @@ O campo `text` é uma string Unicode não vazia de até **16.384 bytes UTF-8**, 
 
 O post é assinado com a chave privada correspondente ao `subject_key` do certificado referenciado. O autor não precisa pedir assinatura à autoridade para cada post. Um post construído manualmente é aceitável se passar pelas mesmas verificações.
 
+`created_at` é uma declaração do autor incluída no payload assinado. A assinatura autentica essa declaração, mas não prova o momento real da criação nem estabelece ordem global entre posts. Aplicações podem escolher como apresentar horários divergentes ou futuros, sem alterar o campo ou a identidade do objeto. O texto não sofre normalização Unicode antes de JCS e CID: sequências Unicode diferentes, ainda que visualmente semelhantes, podem gerar CIDs diferentes.
+
 ### 5.1. Ordem normativa de validação de um post
 
 1. Conferir tamanho, JSON/I-JSON e schema v2, rejeitando campos não definidos.
 2. Recalcular CID do bloco completo e compará-lo ao CID solicitado/anunciado.
 3. Obter bloco do certificado usando `certificate_cid` (local ou pela rede); conferir schema, CID e assinatura da AC.
-4. Conferir que a AC pertence ao conjunto reconhecido localmente e aplicar a política de certificado/expiração/revogação.
+4. Conferir que a AC pertence ao conjunto reconhecido localmente e validar o certificado, incluindo sua vigência e os dados de revogação disponíveis segundo as regras da seção 4.
 5. Conferir `author_key_id == keyId(certificado.payload.subject_key)`.
 6. Conferir assinatura Ed25519 do post usando a chave do usuário certificada.
-7. Aplicar política local de aceitação e, se aplicável, regras locais de disponibilidade e retenção. A validade do `reply_to` não exige que o post pai esteja imediatamente disponível: referência pode permanecer pendente.
+
+**Decisão operacional, não normativa:** após as verificações, o nó aplica sua política local de aceitação, disponibilidade e retenção. A validade do `reply_to` não exige que o post pai esteja imediatamente disponível: a referência pode permanecer pendente.
+
+Como `certificate_cid` integra o payload assinado do post, substituir o certificado por outro bloco, mesmo com o mesmo `subject_key`, muda seu CID e rompe essa referência. Alterar `certificate_cid` no post exige nova assinatura do autor. O receptor não pode substituir silenciosamente o certificado apontado por outro que considere equivalente.
 
 Um nó intermediário NÃO DEVE reescrever o post. O recebimento por um nó não produz assinatura de autoridade, nem confere privilégios adicionais de origem ao conteúdo.
 
@@ -145,7 +156,6 @@ Cada nó escolhe, sem necessidade de consenso global:
 
 - quais ACs reconhece para certificados de usuários;
 - quais peers aceita contatar/receber e por quais transportes;
-- quais grupos de autoridades aceita numa sessão;
 - se armazena, oferece ou propaga um objeto estruturalmente válido;
 - o que faz em caso de certificado revogado, informação indisponível ou quotas excedidas.
 
@@ -179,7 +189,7 @@ Roteamento via DHT/GossipSub é **opcional**, nunca condição para conformidade
 }
 ```
 
-`from` identifica a chave do nó signatário. `request_id` é gerado por solicitação, permitindo correlação de respostas; cada resposta DEVE ecoar o `request_id` da mensagem a que responde (ou iniciar novo identificador no caso de mensagens espontâneas). Cada envelope é assinado com `AXIPY/WIRE/2\n`.
+`from` identifica a chave do nó signatário. `request_id` é gerado por solicitação, permitindo correlação de respostas; cada resposta DEVE ecoar o `request_id` da mensagem a que responde (ou iniciar novo identificador no caso de mensagens espontâneas). O receptor DEVE conferir essa correlação no contexto da sessão, e uma mensagem já processada não deve produzir o mesmo efeito outra vez. Cada envelope é assinado com `AXIPY/WIRE/2\n`.
 
 Mensagens `HELLO` e `CHALLENGE` têm `session_id:null`; após `CHALLENGE`, `CONFIRM`, `READY` e mensagens posteriores usam o ID de sessão recebido. Os corpos são schemas fechados `schemas/body-*.schema.json`, escolhidos pelo campo `kind`. Todos os campos são obrigatórios nos respectivos corpos; ausência não pode ser confundida com `null`.
 
@@ -187,21 +197,27 @@ Mensagens `HELLO` e `CHALLENGE` têm `session_id:null`; após `CHALLENGE`, `CONF
 
 **Estados:** `DISCONNECTED → HELLO_SENT → CHALLENGED → CONFIRMED → READY`; qualquer rejeição encerra tentativa de sessão. O lado B pode começar como `LISTENING` e só entra em sessão após autenticação das mensagens.
 
-1. **A → B `HELLO`:** JWK de A, `nonce_a`, autoridades desejadas/reconhecidas na comunicação, versões Wire aceitas. A assina; B verifica `from == keyId(node_key)` e assinatura com JWK enviada, aplica política de peer. Sem versão comum ou interseção de ACs permitidas na sessão, B pode responder `ERROR` e encerrar.
-2. **B → A `CHALLENGE`:** JWK de B, eco de `nonce_a`, novo `nonce_b`, `session` aleatório e `accepted_authorities` (subconjunto das ofertadas por A que B aceita). A confere assinatura e identidade de B segundo a política local, eco e interseção.
+1. **A → B `HELLO`:** JWK de A, `nonce_a` e versões Wire aceitas. A assina; B verifica `from == keyId(node_key)` e assinatura com a JWK apresentada, e aplica sua política local de peer. Sem versão comum, B pode responder `ERROR` e encerrar.
+2. **B → A `CHALLENGE`:** JWK de B, eco de `nonce_a`, novo `nonce_b` e `session` aleatório. A confere assinatura e identidade de B segundo sua política local, além do eco do nonce.
 3. **A → B `CONFIRM`:** eco dos dois nonces e do `session`, assinado por A.
-4. **B → A `READY`:** confirma `session` e conjunto de ACs da sessão, assinado por B.
+4. **B → A `READY`:** confirma `session`, assinado por B.
 
-Ambos verificam `request_id`, identidade dos signatários, vínculo dos nonces à sessão e ausência de reutilização. Nonces não são credenciais permanentes. Sessões possuem duração e limites estabelecidos localmente. O handshake **não certifica o usuário** e não declara automaticamente que qualquer post do peer é válido.
+Ambos verificam `request_id`, identidade dos signatários, vínculo dos nonces à sessão e ausência de reutilização. `CHALLENGE`, `CONFIRM` e `READY` ecoam o `request_id` de `HELLO`; `CONFIRM` e `READY` vinculam o `session_id` do envelope ao `session` do corpo. B só considera A autenticado para aquela tentativa depois de conferir `CONFIRM`; A só considera a sessão pronta depois de conferir `READY`. A assinatura de `CHALLENGE`, com `nonce_a` recém-gerado por A, autentica a chave apresentada por B para a tentativa, sujeita à política local de identidade do peer. Nonces não são credenciais permanentes. Sessões possuem duração e limites estabelecidos localmente. O handshake **não certifica o usuário**, não divulga autoridades reconhecidas por nenhum participante e não declara automaticamente que qualquer post do peer é válido. Chaves de nó autenticam os peers; não representam uma lista de ACs reconhecidas.
+
+O receptor decide localmente quais ACs reconhece ao processar `ANNOUNCE` e ao validar o certificado apontado pelo post após `BLOCK`. Não há negociação de conjunto de ACs no handshake, nem requisito de uma interseção de confiança para estabelecer a sessão. A rejeição de um anúncio não exige divulgação das autoridades reconhecidas pelo receptor.
+
+O handshake assinado confirma posse das chaves AXIPY apresentadas e vincula mensagens à tentativa por nonces e `session`, mas **não negocia chave de cifragem, não fornece sigilo nem forward secrecy**. No TCP básico, um observador pode ler o tráfego e um adversário ativo pode retransmitir mensagens; assinaturas e verificações de estado impedem que uma mensagem antiga seja aceita como nova sem os nonces e a sessão correspondentes, desde que IDs e nonces não sejam reutilizados. O handshake não vincula criptograficamente a sessão AXIPY aos bytes de uma conexão TCP ou a um canal libp2p específico; por isso não promete impedir retransmissão em tempo real por um intermediário. O perfil libp2p distingue as garantias do canal das assinaturas AXIPY em [profiles/LIBP2P.md](profiles/LIBP2P.md).
+
+A ausência de lista de ACs no handshake evita essa divulgação direta, mas não proporciona anonimato. Padrões de anúncio, aceitação, rejeição e tráfego podem permitir inferências sobre políticas locais. `ANNOUNCE.issuer_id` continua visível para quem puder observar essa mensagem; sigilo do canal depende do perfil de transporte e da configuração utilizada.
 
 ### 7.3. Tipos de mensagens
 
 | Tipo | Corpo | Efeito |
 |---|---|---|
-| `HELLO` | `node_key`, `nonce_a`, `authorities`, `wire_versions` | Solicitar sessão |
-| `CHALLENGE` | `node_key`, `nonce_a`, `nonce_b`, `accepted_authorities`, `session` | Desafio assinado de B |
+| `HELLO` | `node_key`, `nonce_a`, `wire_versions` | Solicitar sessão |
+| `CHALLENGE` | `node_key`, `nonce_a`, `nonce_b`, `session` | Desafio assinado de B |
 | `CONFIRM` | `nonce_a`, `nonce_b`, `session` | Confirmar posse de chave de A |
-| `READY` | `session`, `accepted_authorities` | Sessão pronta |
+| `READY` | `session` | Sessão pronta |
 | `ANNOUNCE` | `cid`, `issuer_id`, `author_key_id` | Anunciar CID de post e AC declarada |
 | `DECISION` | `cid`, `decision: WANT/SKIP/REJECT`, `reason` | Filtrar sem baixar post |
 | `WANT` | `cid` | Pedir bloco por CID |
@@ -219,7 +235,7 @@ Todos os corpos estão definidos nos schemas. O campo `object_type` em `BLOCK` t
 
 `A → B: ANNOUNCE(post_cid, issuer_id, author_key_id)` → `B → A: DECISION(WANT|SKIP|REJECT)` → (se WANT) `B → A: WANT(post_cid)` → `A → B: BLOCK(post)` → eventualmente `B → A: WANT(certificate_cid)` → `A → B: BLOCK(certificate)`.
 
-B pode recusar na etapa `ANNOUNCE` quando a AC declarada não for reconhecida. A declaração é do **nó transmissor**, portanto B DEVE conferir novamente a AC real após baixar o post e o certificado. B pode solicitar o certificado a qualquer peer que o possua, não apenas ao transmissor do post. `SKIP` não significa objeto inválido; `REJECT` significa que B não deseja aquela transferência. Anúncios não implicam entrega garantida nem propagação automática.
+B pode recusar na etapa `ANNOUNCE` quando a AC declarada não for reconhecida. `issuer_id` e `author_key_id` no anúncio são **declarações preliminares do peer**, não provas de certificação ou autoria. Se B prosseguir, DEVE verificar o post, obter o certificado exato apontado por `certificate_cid`, verificar a assinatura da AC reconhecida localmente e comparar `issuer_id` anunciado com `certificate.payload.issuer_id` e `author_key_id` anunciado com `post.payload.author_key_id`. Uma divergência torna o anúncio inconsistente e jamais torna o objeto legítimo por si só; a validade do objeto obtido por outra via continua sujeita às verificações normais. B pode solicitar o certificado a qualquer peer que o possua, não apenas ao transmissor do post. `SKIP` não significa objeto inválido; `REJECT` significa que B não deseja aquela transferência. Anúncios não implicam entrega garantida nem propagação automática.
 
 ### 7.5. Recuperação independente do emissor
 
@@ -244,7 +260,7 @@ Um nó DEVE anunciar **ao menos um perfil** que implementa em seu descriptor; n�
 
 ## 9. Conformidade, extensões e versionamento
 
-**Conformidade de objeto:** validar JCS, CIDs, schemas, assinaturas, certificado e política de confiança explicitada. **Conformidade de nó:** tratar os 14 tipos Wire, aplicar handshake, validação CID antes de declarar sucesso de transferência e anunciar ao menos um perfil padronizado. **Conformidade de AC:** validar prova de posse, emitir certificados conforme schema, utilizar chaves corretas e assinar seu próprio descriptor/snapshots quando publicados.
+**Conformidade de objeto:** validar JCS, CIDs, schemas, assinaturas e vínculo com o certificado exato. O reconhecimento da AC é uma decisão local separada da validade criptográfica do objeto. **Conformidade de nó:** tratar os 14 tipos Wire, aplicar handshake, validação CID antes de declarar sucesso de transferência e anunciar ao menos um perfil padronizado. **Conformidade de AC:** validar prova de posse, emitir certificados conforme schema, utilizar chaves corretas e assinar seu próprio descriptor/snapshots quando publicados.
 
 Campos desconhecidos nos tipos nucleares são rejeitados (schemas fechados). Extensões futuras devem receber nova versão de objeto ou namespace/estrutura expressamente definida; não alterar silenciosamente dados assinados de v2. `claims` é o único espaço estruturado de claims da autoridade, sem novos campos arbitrários em posts.
 
@@ -259,7 +275,20 @@ A v0.2 define **versão de wire/objetos `2`**, não uma promessa de compatibilid
 - Sem disponibilidade assegurada, nenhuma implementação é obrigada a hospedar todos os textos.
 - Conformidade não implica um feed público único ou uma rede social globalmente descoberta.
 
-## 11. Material verificável deste pacote
+## 11. Considerações de Segurança
+
+Esta seção reúne propriedades e limites de segurança da versão 2. As regras de validação estão nas seções [2](#2-criptografia-e-codificação), [4](#4-certificação-de-usuários), [5](#5-posts-apenas-texto-puro) e [7](#7-protocolo-de-comunicação-abstrato-axipy-wire-2); recomendações operacionais não criam uma política global de aceitação.
+
+- **Integridade e autenticidade:** o CID confirma os bytes canônicos do objeto completo; as assinaturas autenticam o payload em seu contexto e o verificador confere o vínculo entre `certificate_cid`, `author_key_id`, `subject_key` e assinatura da AC. Isso não prova a veracidade do texto, a identidade civil do autor nem a confiabilidade do nó que o entregou.
+- **Confiança seletiva:** a validade estrutural e criptográfica é distinta da decisão local de reconhecer uma AC e distribuir um objeto. Descriptors, bootstraps, anúncios e indicações de providers não concedem confiança. Nenhuma AC é universalmente obrigatória.
+- **Revogação:** snapshots são assinados, identificados por CID e ordenados por `sequence` por AC. `issued_at` e `next_update` não atestam instantaneamente o estado de toda a rede. Um `next_update` ultrapassado indica possível desatualização, sem invalidar a assinatura ou revogar certificados por si só. Cada nó escolhe localmente como operar com informação atrasada ou indisponível; não há consulta online obrigatória por post nem escolha global entre aceitar e rejeitar.
+- **Reutilização e replay:** nonces frescos, `request_id`, `session_id`, assinaturas e estados de handshake vinculam mensagens a uma tentativa e permitem rejeitar duplicatas e mensagens de outra sessão. O receptor precisa manter estado suficiente enquanto a sessão está ativa. `sent_at` é declarado pelo emissor e, sozinho, não é prova de frescor; um relay ativo em tempo real não é excluído pelo handshake AXIPY.
+- **Anúncios enganosos:** `ANNOUNCE.issuer_id` permite filtrar antes do download, mas é alegação do transmissor. A AC efetiva só é verificada no certificado assinado referido pelo post; anúncios falsos não validam objetos. Como recomendação de implementação não normativa, operadores podem limitar anúncios, pedidos, bytes e sessões por peer e registrar inconsistências para decisões locais, sem reputação ou penalização universal.
+- **Transporte:** autenticação de mensagens não equivale a confidencialidade. O TCP básico expõe conteúdo e metadados na rede; uma sessão libp2p protegida pode acrescentar sigilo e autenticação do PeerId, conforme seu protocolo de segurança negociado. O vínculo PeerId–`node_id` ainda deve ser verificado separadamente. Veja [TCP](profiles/TCP.md) e [libp2p](profiles/LIBP2P.md).
+- **Unicode e apresentação:** o texto é assinado e identificado sem normalização automática. Sequências Unicode distintas podem ter aparência igual e CIDs diferentes. Homóglifos, caracteres de controle e marcadores bidirecionais podem induzir uma leitura visual enganosa. Como recomendação de implementação não normativa, aplicações podem tratar esse risco na apresentação, sem formato de interface imposto pelo protocolo.
+- **Identidades e chaves:** o protocolo não impede que uma pessoa crie várias chaves ou obtenha certificados de mais de uma AC. Uma chave privada comprometida permite assinar novos objetos com aquela identidade até que os receptores a tratem conforme certificados, revogação e política local. O protocolo não oferece recuperação automática, proteção da chave no dispositivo, prevenção global de abuso, disponibilidade de blocos nem consenso sobre horário ou ordem de publicações.
+
+## 12. Material verificável deste pacote
 
 - `schemas/*.schema.json`: formatos verificáveis em JSON Schema Draft 2020-12.
 - `examples/*.json`: certificado, post, descriptors, anúncio e blocos completos reais assinados por chaves **somente de teste**.

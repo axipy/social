@@ -23,6 +23,8 @@ Este é o repositório da **aplicação**. A especificação é mantida separada
 - Comunicação entre nós com handshake AXIPY Wire 2, anúncios, decisão de recebimento, busca de provedores e transferência de blocos pelo perfil TCP.
 - Política local de autoridades confiáveis e identidade de nó separada das identidades dos usuários e da autoridade.
 
+O handshake Wire 2 autentica os nós sem enviar listas de autoridades reconhecidas. O receptor consulta sua configuração local ao receber `ANNOUNCE` e valida novamente a AC real no certificado do post. Um `DECISION(REJECT)` pode revelar algo sobre o comportamento do nó; no TCP básico, o canal também não oferece sigilo por si só.
+
 A interface usa HTTP(S) entre navegador e nó. A federação entre nós usa AXIPY Wire 2 sobre TCP. O perfil libp2p pertence à especificação, mas não está implementado nesta aplicação.
 
 ## Executar localmente

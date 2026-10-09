@@ -9,9 +9,9 @@ from jsonschema import Draft202012Validator
 from referencing import Registry, Resource
 R=pathlib.Path(__file__).resolve().parents[1]
 E=R/'examples';S=R/'schemas'
-schemas={p.name:json.loads(p.read_text()) for p in S.glob('*.schema.json')}
+schemas={p.name:json.loads(p.read_text(encoding='utf-8')) for p in S.glob('*.schema.json')}
 registry=Registry().with_resources((v['$id'],Resource.from_contents(v)) for v in schemas.values())
-def read(n):return json.loads((E/(n+'.json')).read_text())
+def read(n):return json.loads((E/(n+'.json')).read_text(encoding='utf-8'))
 def validate(name,schema):
  obj=read(name)
  v=Draft202012Validator(schemas[schema+'.schema.json'],registry=registry)
@@ -57,6 +57,15 @@ for name in wire_examples:
  if obj['payload']['kind']=='BLOCK':
   bb=obj['payload']['body'];assert cid(bb['object'])==bb['cid']
   assert bb['object']['payload']['type']=='axipy.'+bb['object_type']
+hello=read('wire-hello')['payload'];challenge=read('wire-challenge')['payload'];confirm=read('wire-confirm')['payload'];ready=read('wire-ready')['payload']
+assert set(hello['body'])=={'node_key','nonce_a','wire_versions'}
+assert set(challenge['body'])=={'node_key','nonce_a','nonce_b','session'}
+assert set(ready['body'])=={'session'}
+assert all(x['request_id']==hello['request_id'] for x in (challenge,confirm,ready))
+assert hello['session_id'] is None and challenge['session_id'] is None
+assert challenge['body']['nonce_a']==hello['body']['nonce_a']==confirm['body']['nonce_a']
+assert confirm['body']['nonce_b']==challenge['body']['nonce_b']
+assert all(x['session_id']==x['body']['session']==challenge['body']['session'] for x in (confirm,ready))
 # Negatives: schema valid but invalid signature; cert válido mas sem autoridade confiável.
 from copy import deepcopy
 validator=Draft202012Validator(schemas['wire-message.schema.json'],registry=registry)
@@ -64,6 +73,9 @@ malformed=deepcopy(read('wire-announce'));del malformed['payload']['body']['issu
 assert list(validator.iter_errors(malformed)), 'wire-body incompleto não rejeitado'
 malformed2=deepcopy(read('wire-block-post'));malformed2['payload']['body']['object']['payload']['type']='axipy.certificate'
 assert list(validator.iter_errors(malformed2)), 'wire BLOCK com tipo falso não rejeitado'
+for name,field in [('wire-hello','authorities'),('wire-challenge','accepted_authorities'),('wire-ready','accepted_authorities')]:
+ old=deepcopy(read(name));old['payload']['body'][field]=[c['payload']['issuer_id']]
+ assert list(validator.iter_errors(old)), f'{name}: lista de ACs antiga não rejeitada'
 post_schema_validator=Draft202012Validator(schemas['post.schema.json'],registry=registry)
 assert list(post_schema_validator.iter_errors({**p,'payload':{**p['payload'],'text':'x','unknown':'x'}})), 'campo extra do post não rejeitado'
 assert len(('á'*8193).encode('utf8'))>16384, 'limite de texto medido em bytes não caracteres'

@@ -14,9 +14,6 @@
         "kty": "OKP"
       },
       "nonce_a": "Im6lijki6XDP-ZcFWl10S7cqziUP4WWAFVGjpMtakLg",
-      "authorities": [
-        "axk1_q3V3Hf8xqDv8GzSgasZo7IQOIRaz-0Vm9eUyK0rthZk"
-      ],
       "wire_versions": [
         "2"
       ]
@@ -24,6 +21,6 @@
   },
   "signature": {
     "algorithm": "Ed25519",
-    "value": "PzyKyq3-IMKJ6tWFP2b3kImGjtbjlNYekRm70jJe1Obw71XOM_PEfTzVApjf29gjaPl-AbU3IHxm0cqJ1zX8Dg"
+    "value": "2Mr0xX3O5zpxXI0WEaavHWz_jD3jnO7pf26lhHz5AGyPjMXII_Lpd2zmtFYhEMY6mSBwzhZxo8lQxxhF_yLmAA"
   }
 }

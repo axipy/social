@@ -8,14 +8,11 @@
     "session_id": "pngJXxDbGk_PukENf10aqjbETMgGKa1iseIxVusbMno",
     "sent_at": "2026-10-09T02:30:00Z",
     "body": {
-      "session": "pngJXxDbGk_PukENf10aqjbETMgGKa1iseIxVusbMno",
-      "accepted_authorities": [
-        "axk1_q3V3Hf8xqDv8GzSgasZo7IQOIRaz-0Vm9eUyK0rthZk"
-      ]
+      "session": "pngJXxDbGk_PukENf10aqjbETMgGKa1iseIxVusbMno"
     }
   },
   "signature": {
     "algorithm": "Ed25519",
-    "value": "4pooOZnv71xI_K0DSSdiIXkLd6j0RYD7S1eEsfmkUz7--NJbwrh8ZPdI6KegVRKluNA6AivKvEcSJyEyxLUDDA"
+    "value": "YvwNdchPepO1EKFkgxDNBxEzL6In77XSM388n8SAj6LfSR28nG3mm8ZRuWc0MdN0-PQ7Ao_5e0XmG64jLS-tDg"
   }
 }

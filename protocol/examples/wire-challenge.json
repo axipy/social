@@ -15,14 +15,11 @@
       },
       "nonce_a": "Im6lijki6XDP-ZcFWl10S7cqziUP4WWAFVGjpMtakLg",
       "nonce_b": "r6RlyuAwgrYAH7-TOGeb2ubeXAvnvZXBSlVMyK6wpBk",
-      "accepted_authorities": [
-        "axk1_q3V3Hf8xqDv8GzSgasZo7IQOIRaz-0Vm9eUyK0rthZk"
-      ],
       "session": "pngJXxDbGk_PukENf10aqjbETMgGKa1iseIxVusbMno"
     }
   },
   "signature": {
     "algorithm": "Ed25519",
-    "value": "9syp_S_pPaKd_2Wxz1qEAwqRFgnX6YHATB-nWq0h_QyyaD0d6KE9qOtci-VZDoQoWPweXqAocQo1C7OoMFnrAg"
+    "value": "ytd7cPxL08OGUwmSyftXQDM1MTVlAyYk45Yc_l9CzLfvw0fcuVSC9mbSRDGo6WuMvulV2o-_xNAfR011gxsGCQ"
   }
 }

@@ -24,10 +24,10 @@ const peers=signed('peer-list',{type:'axipy.peer_list',version:'2',node_id:N.id,
 const bodyBase=(kind,from,request_id,session_id,body)=>({type:'axipy.wire',version:'2',kind,from,request_id,session_id,sent_at:moment,body});
 function msg(name,kind,key,session,body,requestId){return signed(name,bodyBase(kind,key.id,requestId||nonceTest(name),session,body),key,'wire');}
 const handshakeId=nonceTest('handshake');const na=nonceTest('nonce-a'),nb=nonceTest('nonce-b'),sess=nonceTest('session');
-const hello=msg('wire-hello','HELLO',N,null,{node_key:N.publicJwk,nonce_a:na,authorities:[A.id],wire_versions:['2']},handshakeId);
-const challenge=msg('wire-challenge','CHALLENGE',B,null,{node_key:B.publicJwk,nonce_a:na,nonce_b:nb,accepted_authorities:[A.id],session:sess},handshakeId);
+const hello=msg('wire-hello','HELLO',N,null,{node_key:N.publicJwk,nonce_a:na,wire_versions:['2']},handshakeId);
+const challenge=msg('wire-challenge','CHALLENGE',B,null,{node_key:B.publicJwk,nonce_a:na,nonce_b:nb,session:sess},handshakeId);
 const confirm=msg('wire-confirm','CONFIRM',N,sess,{nonce_a:na,nonce_b:nb,session:sess},handshakeId);
-const ready=msg('wire-ready','READY',B,sess,{session:sess,accepted_authorities:[A.id]},handshakeId);
+const ready=msg('wire-ready','READY',B,sess,{session:sess},handshakeId);
 const ann=msg('wire-announce','ANNOUNCE',N,sess,{cid:pCid,issuer_id:A.id,author_key_id:U.id});
 const decision=msg('wire-decision','DECISION',B,sess,{cid:pCid,decision:'WANT',reason:null},ann.payload.request_id);
 const want=msg('wire-want','WANT',B,sess,{cid:pCid});
@@ -42,6 +42,6 @@ const badCert=signed('certificate-untrusted',{...cert.payload,issuer_id:X.id,pol
 const tampered=JSON.parse(JSON.stringify(post));tampered.payload.text+=' adulterado';save('post-tampered-INVALID',tampered);
 const manifest={spec_revision:'0.2',wire_version:'2',test_only:true,key_ids:{authority:A.id,other_authority:X.id,user:U.id,node_a:N.id,node_b:B.id},cids:{certificate:cCid,post:pCid,reply:cidOf(reply),revocations:cidOf(rev),authority:cidOf(authority),node_a:cidOf(nodeA),node_b:cidOf(nodeB)},session:sess};save('identifiers',manifest);
 fs.writeFileSync(path.join(dir,'tcp-frame-announce.hex'),encodeFrame(ann).toString('hex')+'\n');
-fs.writeFileSync(path.join(dir,'README.md'),'# Exemplos determinísticos AXIPY v2\n\nArquivos assinado com chaves de teste previsíveis. Nunca usar essas chaves para produção. O teste `post-tampered-INVALID.json` é deliberadamente inválido. `certificate-untrusted.json` tem assinatura correta, mas é recusado por quem só confia na autoridade AXIPY de teste.\n');
+fs.writeFileSync(path.join(dir,'README.md'),'# Exemplos determinísticos AXIPY v2\n\nArquivos assinados com chaves de teste previsíveis. Nunca usar essas chaves para produção. O teste `post-tampered-INVALID.json` é deliberadamente inválido. `certificate-untrusted.json` tem assinatura correta, mas é recusado por quem só confia na autoridade AXIPY de teste.\n');
 console.log('Generated',fs.readdirSync(dir).length,'example files');
 console.log('Certificate CID:',cCid);console.log('Post CID:',pCid);

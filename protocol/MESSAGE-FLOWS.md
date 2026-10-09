@@ -1,6 +1,6 @@
 # AXIPY Wire 2 — fluxos completos de interação
 
-Este documento descreve sequências com os **mesmos tipos e campos** definidos nos schemas. Exemplos assinados estão em `examples/`. Um passo não implica que todos os peers armazenem ou redistribuam conteúdo.
+Este documento ilustra sequências com os **mesmos tipos e campos** definidos nos schemas. É explicativo e não acrescenta requisitos à [especificação normativa](SPEC.md). Exemplos assinados estão em `examples/`. Um passo não implica que todos os peers armazenem ou redistribuam conteúdo; escolhas de conexão, armazenamento e propagação são políticas locais.
 
 ## Cenário 1 — nascer uma rede com três bootstraps
 
@@ -43,10 +43,10 @@ Nenhuma etapa concede a D autoridade para certificar outros usuários em nome da
 ```text
 [Nó A]                                 [Nó B]
   |                                      |
-  |--- HELLO(node_key_A, nonce_A) ----->|
-  |<-- CHALLENGE(node_key_B, nonce_B) --|
-  |--- CONFIRM(nonce_A, nonce_B) ------>|
-  |<-- READY(session, autoridades) -----|
+  |--- HELLO(key_A, nonce_A, versions) -->|
+  |<-- CHALLENGE(key_B, nonce_A, nonce_B, session) --|
+  |--- CONFIRM(nonce_A, nonce_B, session) -->|
+  |<-- READY(session) ------------------|
   |                                      |
   |--- ANNOUNCE(CID_P, AC, autor) ----->|
   |<-- DECISION(WANT, CID_P) -----------|
@@ -62,7 +62,9 @@ Nenhuma etapa concede a D autoridade para certificar outros usuários em nome da
   |                                      |-- aplica política local
 ```
 
-Em caso de autoridade não reconhecida, B pode responder `DECISION(REJECT, reason="UNKNOWN_AUTHORITY")` antes de baixar `BLOCK`. Ao baixar `BLOCK`, B continua obrigado a verificar que o certificado de fato pertence à AC anunciada. O mesmo certificado pode ser obtido de outro fornecedor; A não monopoliza o acesso ao objeto.
+Em caso de autoridade não reconhecida, B pode responder `DECISION(REJECT, reason=null)` antes de baixar `BLOCK`, sem transmitir sua lista de ACs. A resposta ainda permite inferências sobre a decisão local. Ao baixar `BLOCK`, B continua obrigado a verificar que o certificado de fato pertence à AC anunciada. O mesmo certificado pode ser obtido de outro fornecedor; A não monopoliza o acesso ao objeto.
+
+O `issuer_id` de `ANNOUNCE` é apenas a alegação preliminar de A. Se diferir do `issuer_id` do certificado assinado apontado pelo post, B identifica um anúncio inconsistente; não passa a confiar no objeto por causa da declaração. A validade estrutural/criptográfica do post continua separada da decisão local de B de aceitá-lo.
 
 ## Cenário 4 — localizar objeto por CID sem saber quem publicou
 
@@ -84,8 +86,10 @@ Um `PROVIDERS` só indica fornecedores **alegados**. Um fornecedor pode não pos
 - Node Y confia nas ACs **A** e **B**.
 - Node Z confia somente na AC **D**.
 
-X e Y podem negociar sessões com escopo da AC A e trocar posts de usuários certificados por A, desde que suas políticas de peer permitam. X recusa um anúncio de autor certificado somente por B; Y pode aceitá-lo. Z não é obrigado a estabelecer sessões com nenhum dos dois. Uma ponte voluntária pode existir, mas não ganha poder de alterar assinaturas ou de criar confiança em D.
+X e Y podem estabelecer sessão sem divulgar seus conjuntos de ACs e trocar posts de usuários certificados por A, desde que suas políticas de peer permitam. X pode recusar um anúncio de autor certificado somente por B; Y pode aceitá-lo. Z não é obrigado a estabelecer sessões com nenhum dos dois. Uma ponte voluntária pode existir, mas não ganha poder de alterar assinaturas ou de criar confiança em D.
 
 ## Cenário 6 — certificado revogado, conteúdo ainda imutável
 
 A AC publica novo snapshot `revocations` com sequência crescente. O CID do post anteriormente publicado permanece **idêntico**, porque o texto e a assinatura não mudaram. Um nó que recebe o novo snapshot pode recusar passar a aceitar aquele certificado conforme sua política; outro nó que ainda não sincronizou a AC pode ter informação de revogação mais antiga. O protocolo não afirma que a rede inteira possui um estado de revogação instantaneamente idêntico.
+
+Quando o horário UTC atual alcança `next_update`, o snapshot pode estar desatualizado, mas sua assinatura e seu CID continuam verificáveis. A passagem do prazo não revoga certificados nem obriga o nó a aceitá-los ou rejeitá-los; essa é uma decisão local. `next_update` não prova ausência de revogação nem exige consulta online à AC para cada post.

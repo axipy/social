@@ -14,14 +14,6 @@
       "type": "string",
       "pattern": "^[A-Za-z0-9_-]{43}$"
     },
-    "accepted_authorities": {
-      "type": "array",
-      "uniqueItems": true,
-      "items": {
-        "type": "string",
-        "pattern": "^axk1_[A-Za-z0-9_-]{43}$"
-      }
-    },
     "session": {
       "type": "string",
       "pattern": "^[A-Za-z0-9_-]{43}$"
@@ -31,7 +23,6 @@
     "node_key",
     "nonce_a",
     "nonce_b",
-    "accepted_authorities",
     "session"
   ],
   "additionalProperties": false

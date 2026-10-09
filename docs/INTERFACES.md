@@ -29,7 +29,7 @@ Esse endpoint HTTP é uma conveniência entre a aplicação social e a autoridad
 
 ## Nó / nó — Wire 2/TCP
 
-Porta padrão `4101`: frames de 4 octetos big-endian (`uint32`) + bytes JCS/UTF-8 do envelope completo, máximo 1 MiB. `HELLO` e `CHALLENGE` em sessão nula, seguidos de `CONFIRM` e `READY`; após isso: `ANNOUNCE → DECISION(WANT|SKIP|REJECT) → WANT → BLOCK` para post e certificado. Nunca assumir validade apenas porque o peer assinou o envelope. Ver `protocol/SPEC.md` e `protocol/profiles/TCP.md`.
+Porta padrão `4101`: frames de 4 octetos big-endian (`uint32`) + bytes JCS/UTF-8 do envelope completo, máximo 1 MiB. `HELLO` e `CHALLENGE` em sessão nula, seguidos de `CONFIRM` e `READY`; esse handshake autentica os peers sem transmitir listas de ACs reconhecidas. Após isso: `ANNOUNCE → DECISION(WANT|SKIP|REJECT) → WANT → BLOCK` para post e certificado. O receptor filtra `ANNOUNCE` pela própria configuração e confere a AC real no certificado obtido. Nunca assumir validade apenas porque o peer assinou o envelope. Ver `protocol/SPEC.md` e `protocol/profiles/TCP.md`.
 
 ## Observações de implantação
 

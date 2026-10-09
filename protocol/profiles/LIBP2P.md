@@ -6,7 +6,13 @@
 
 `/axipy/2.0.0`
 
-O nó registra um handler de stream bidirecional libp2p para esse identificador. O stream transporta frames AXIPY com o **mesmo formato uint32 big-endian + JCS UTF-8** definido em `profiles/TCP.md` (nunca assumir que chunks do stream delimitam mensagens). Multiplexação, negociação e segurança de conexão são fornecidas pelo stack libp2p; assinaturas de mensagens e validação AXIPY continuam obrigatórias.
+O nó registra um handler de stream bidirecional libp2p para esse identificador. O stream transporta frames AXIPY com o **mesmo formato uint32 big-endian + JCS UTF-8** definido em [TCP.md](TCP.md) (nunca assumir que chunks do stream delimitam mensagens). Multiplexação e negociação do stream são fornecidas pelo stack libp2p; assinaturas de mensagens e validação AXIPY continuam obrigatórias.
+
+### Segurança do canal e da sessão AXIPY
+
+Uma conexão libp2p que negociou e verificou um protocolo seguro, como Noise ou TLS conforme a configuração do stack, fornece as garantias desse canal: autenticação da identidade libp2p observada, integridade e confidencialidade do tráfego da conexão. O handshake AXIPY `HELLO → CHALLENGE → CONFIRM → READY` é uma negociação de aplicação **sobre** esse canal: autentica as chaves AXIPY apresentadas e estabelece `session_id`, sem divulgar listas de ACs reconhecidas. Ele não substitui Noise/TLS, não negocia sua própria chave de cifragem e não herda automaticamente um vínculo entre PeerId e `node_id`.
+
+O receptor confere assinatura, nonces, `request_id`, `session_id` e estado conforme [SPEC.md §7.2](../SPEC.md#72-handshake-de-nós). Ao usar libp2p, também confere que o PeerId autenticado pelo canal corresponde ao peer esperado por sua política e que qualquer associação prévia PeerId–`node_id` permanece consistente. A sessão AXIPY só fica pronta após `READY`; B autentica a confirmação de A em `CONFIRM`. A proteção contra replay entre sessões depende de nonces e IDs novos e da rejeição de mensagens/solicitações duplicadas, não de uma promessa genérica da multiplexação libp2p. O handshake AXIPY não vincula criptograficamente seu transcript aos bytes do canal libp2p; a associação é uma verificação local entre identidades observadas na mesma conexão.
 
 ## Identidades
 
